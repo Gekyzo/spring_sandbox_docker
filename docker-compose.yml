@@ -3,10 +3,32 @@ version: '3'
 services:
 
   # Spring
-  spring:
-    container_name: spring_sandbox
+  app:
+    container_name: sand_app
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - db
     ports:
       - '${APP_PORT:-8080}:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/sandbox
+      SPRING_DATASOURCE_USERNAME: '${DB_USER}'
+      SPRING_DATASOURCE_PASSWORD: '${DB_PASS}'
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+  # Database
+  db:
+    container_name: sand_db
+    environment:
+      MYSQL_USER: '${DB_USER}'
+      MYSQL_PASSWORD: '${DB_PASS}'
+      MYSQL_DATABASE: '${DB_NAME}'
+      MYSQL_ROOT_PASSWORD: '${DB_PASS}'
+      TZ: 'Europe/Madrid'
+    ports:
+      - '${DB_PORT:-3306}:3306'
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE # Remove errors "mbind: Operation not permitted"

@@ -1,16 +1,16 @@
 package com.box.sandbox.hello;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@RestController
-@RequestMapping("/hello")
+@Entity
+@Table(name = "MSTR_HELLO")
 public class Hello {
 
-    @GetMapping
-    public String hello() {
-        return "Hello!";
-    }
+    @Id
+    @Column(name = "ID")
+    private Long id;
 
 }
